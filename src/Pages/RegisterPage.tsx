@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { PublicLayout } from "../Layouts/PublicLayout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../Api/AxiosConfig";
 // types
 interface FormData {
   name: string;
@@ -58,8 +59,8 @@ export const RegisterPage = () => {
       });
     return errors;
   };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const errors = validateForm();
@@ -68,16 +69,25 @@ export const RegisterPage = () => {
     } else {
       // Handle form submission, e.g., send data to an API
       console.log("Form data submitted:", formData);
-      setFormErrors([]);
-      // Optionally reset form data after submission
-      setFormData({
-        name: "",
-        lastName: "",
-        email: "",
-        user: "",
-        password: "",
-        confirmPassword: "",
-      });
+      try {
+        const response = await api.post("/register", { ...formData });
+        console.log(response);
+        if (response.status == 201) {
+          setFormErrors([]);
+          // Optionally reset form data after submission
+          setFormData({
+            name: "",
+            lastName: "",
+            email: "",
+            user: "",
+            password: "",
+            confirmPassword: "",
+          });
+          navigate("/login");
+        }
+      } catch (error) {
+        console.log("Register failed:", error);
+      }
     }
   };
   const baseName = import.meta.env.VITE_BASENAME;
@@ -92,7 +102,10 @@ export const RegisterPage = () => {
         />
         <div className="p-4 rounded-lg bg-gray-800 text-white w-80 md:w-full">
           <p className="text-2xl text-center mb-4">Register Form</p>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3 md:grid md:grid-cols-2">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-3 md:grid md:grid-cols-2"
+          >
             {/* Name */}
             <div className="flex flex-col gap-1">
               <label htmlFor="name" className="text-sm select-none">
