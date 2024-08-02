@@ -104,7 +104,7 @@ export const Navbar = () => {
         >
           <div className="px-4 py-3">
             <span className="block text-sm text-gray-900 dark:text-white">
-              Bienvenido {userName}
+              Logged as: {userName}
             </span>
           </div>
           <ul className="py-2" aria-labelledby="boton-menu-usuario">
@@ -113,7 +113,7 @@ export const Navbar = () => {
                 onClick={onLogOut}
                 className="w-full text-start  block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
-                Cerrar sesión
+                Logout
               </button>
             </li>
           </ul>
