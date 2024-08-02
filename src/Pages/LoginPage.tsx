@@ -58,8 +58,6 @@ export const LoginPage = () => {
         },
       });
     } else {
-      // Handle form submission, e.g., send data to an API
-      console.log("Form data submitted:", formData);
       try {
         const response = await api.post("/login", { ...formData });
         if (response.status == 200) {

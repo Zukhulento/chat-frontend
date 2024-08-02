@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { customSessionStorage } from "./Storages/session.storage";
 
 interface UserData {
   user: string;
@@ -38,6 +39,6 @@ export const useUserStore = create<UserState>()(
           name: null,
         }),
     }),
-    { name: "user-storage" }
+    { name: "user-storage", storage: customSessionStorage }
   )
 );
