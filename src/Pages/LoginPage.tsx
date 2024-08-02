@@ -48,7 +48,6 @@ export const LoginPage = () => {
         unstyled: true,
         closeButton: true,
         description: "Check the required form fields.",
-        position: "top-right",
         duration: 5000,
         classNames: {
           toast: "bg-red-200 rounded-xl flex p-4",
@@ -75,7 +74,6 @@ export const LoginPage = () => {
           unstyled: true,
           closeButton: true,
           description: "Your password or email is incorrect",
-          position: "top-right",
           duration: 5000,
           classNames: {
             toast: "bg-red-200 rounded-xl flex p-4",
