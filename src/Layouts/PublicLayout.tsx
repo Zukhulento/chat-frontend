@@ -6,7 +6,7 @@ type LayoutProps = {
 
 export const PublicLayout = ({ children }: LayoutProps) => {
   return (
-    <div className="bg-gray-950 h-screen text-white" id="public-container">
+    <div className="bg-gray-950 h-screen text-white flex" id="public-container">
       {children}
     </div>
   );
