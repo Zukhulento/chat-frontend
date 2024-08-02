@@ -1,8 +1,9 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { PublicLayout } from "../Layouts/PublicLayout";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import api from "../Api/AxiosConfig";
 import { useAuthStore } from "../Stores/Auth.store";
+import { toast } from "sonner";
 // types
 export interface FormData {
   user: string;
@@ -21,7 +22,6 @@ export const LoginPage = () => {
   };
   const [formData, setFormData] = useState<FormData>(formInit);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
-  const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
   // Function to control change on input
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -44,22 +44,47 @@ export const LoginPage = () => {
     const errors = validateForm();
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
+      toast("Please fill the fields", {
+        unstyled: true,
+        closeButton: true,
+        description: "Check the required form fields.",
+        position: "top-right",
+        duration: 5000,
+        classNames: {
+          toast: "bg-red-200 rounded-xl flex p-4",
+          title: "text-red-500 text-xl",
+          description: "text-red-400",
+          closeButton: "bg-red-500 hover:bg-red-600",
+          icon: "text-red-500",
+        },
+      });
     } else {
       // Handle form submission, e.g., send data to an API
       console.log("Form data submitted:", formData);
       try {
         const response = await api.post("/login", { ...formData });
-        console.log(response);
-        console.log(response)
         if (response.status == 200) {
-          // setToken(response.data);
+          const { access_token } = response.data;
+          setToken(access_token);
           setFormErrors({});
-          // Optionally reset form data after submission
           setFormData({ user: "", password: "" });
-          // navigate('/home')
         }
       } catch (error) {
-        console.log("Oh no, something happened: ", error);
+        setFormErrors(errors);
+        toast.error("Not valid credentials", {
+          unstyled: true,
+          closeButton: true,
+          description: "Your password or email is incorrect",
+          position: "top-right",
+          duration: 5000,
+          classNames: {
+            toast: "bg-red-200 rounded-xl flex p-4",
+            title: "text-red-500 text-xl",
+            description: "text-red-400",
+            closeButton: "bg-red-500 hover:bg-red-600",
+            icon: "text-red-500",
+          },
+        });
       }
     }
   };
