@@ -103,7 +103,7 @@ export const Navbar = () => {
           }text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow absolute min-w-32 top-16 right-0 `}
         >
           <div className="px-4 py-3">
-            <span className="block text-sm text-gray-900 dark:text-white">
+            <span className="block text-sm text-gray-900 ">
               Logged as: {userName}
             </span>
           </div>
